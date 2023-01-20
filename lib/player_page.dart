@@ -12,12 +12,14 @@ class PlayerPage extends StatefulWidget {
 }
 
 class _PlayerPageState extends State<PlayerPage> {
+  ScrollController scrollController = ScrollController();
+  int pageNumber = 1;
   List<Player> players = [];
   List<Player> filteredPlayers = [];
 
   Future getPlayers() async {
     String requestedUrl =
-        'https://www.balldontlie.io/api/v1/players?per_page=100';
+        'https://www.balldontlie.io/api/v1/players?page=$pageNumber&per_page=100';
     var response = await http.get(Uri.parse(requestedUrl));
     var jsonData = jsonDecode(response.body);
 
@@ -30,6 +32,7 @@ class _PlayerPageState extends State<PlayerPage> {
       );
       players.add(player);
     }
+
     for (var player in players) {
       if (player.id == widget.teamId) {
         filteredPlayers.add(player);
@@ -41,12 +44,17 @@ class _PlayerPageState extends State<PlayerPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Player Info'),
+        backgroundColor: Color.fromARGB(255, 85, 91, 79),
+      ),
       body: SafeArea(
         child: FutureBuilder(
             future: getPlayers(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {
                 return ListView.builder(
+                  controller: scrollController,
                   itemCount: filteredPlayers.length,
                   padding: EdgeInsets.all(8),
                   itemBuilder: (context, index) {

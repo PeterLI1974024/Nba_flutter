@@ -41,6 +41,12 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          'NBA TEAMS',
+        ),
+        backgroundColor: Color.fromARGB(255, 121, 153, 169),
+      ),
       body: SafeArea(
         child: FutureBuilder(
             future: _data,
