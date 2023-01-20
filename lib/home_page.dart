@@ -6,17 +6,14 @@ import 'models/team.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class HomePage extends StatefulWidget {
-
-   @override
+  @override
   State<HomePage> createState() => _HomePageState();
-
 }
 
-class _HomePageState extends State<HomePage>{
-  
- List<Team> teams = [];
+class _HomePageState extends State<HomePage> {
+  List<Team> teams = [];
   bool isSelected = false;
-  
+
   // get teams
   Future getTeams() async {
     var response = await http.get(Uri.https('balldontlie.io', 'api/v1/teams'));
@@ -28,25 +25,25 @@ class _HomePageState extends State<HomePage>{
         city: eachTeam['city'],
         id: eachTeam['id'],
       );
-     
+
       teams.add(team);
     }
   }
 
+  Future? _data;
+
   @override
   void initState() {
-    // TODO: implement initState
+    _data = getTeams();
     super.initState();
   }
-
-
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
         child: FutureBuilder(
-            future: getTeams(),
+            future: _data,
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {
                 return ListView.builder(
@@ -62,21 +59,18 @@ class _HomePageState extends State<HomePage>{
                           borderRadius: BorderRadius.circular(25),
                         ),
                         child: ListTile(
-                          
-                          leading: CircleAvatar(child: SvgPicture.asset('images/$nbaIcon.svg')),
+                          leading: CircleAvatar(
+                              child: SvgPicture.asset('images/$nbaIcon.svg')),
                           title: Text(teams[index].abbreviation),
                           subtitle: Text(teams[index].city),
-                          onTap: (){
-                               setState(() {
-                                 isSelected = true;
-                                
-                               });
-                            Navigator.push(context,MaterialPageRoute(builder: (context){
-                              return PlayerPage(
-                                teamId :teams[index].id
-                              );
-                            }
-                            ));
+                          onTap: () {
+                            setState(() {
+                              isSelected = true;
+                            });
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (context) {
+                              return PlayerPage(teamId: teams[index].id);
+                            }));
                           },
                         ),
                       ),
@@ -91,5 +85,3 @@ class _HomePageState extends State<HomePage>{
     );
   }
 }
- 
-

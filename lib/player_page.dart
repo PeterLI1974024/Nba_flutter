@@ -1,56 +1,47 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
-import 'package:flutter/material.dart';
 import 'models/player.dart';
 import 'package:http/http.dart' as http;
 
 class PlayerPage extends StatefulWidget {
-
   PlayerPage({this.teamId});
   final teamId;
 
   @override
   State<PlayerPage> createState() => _PlayerPageState();
-
 }
 
 class _PlayerPageState extends State<PlayerPage> {
+  List<Player> players = [];
+  List<Player> filteredPlayers = [];
 
-   List<Player> players = [];
-   List<Player> filteredPlayers = [];
-   
-  Future getPlayers()async{
-    String requestedUrl = 'https://www.balldontlie.io/api/v1/players?per_page=100';
+  Future getPlayers() async {
+    String requestedUrl =
+        'https://www.balldontlie.io/api/v1/players?per_page=100';
     var response = await http.get(Uri.parse(requestedUrl));
     var jsonData = jsonDecode(response.body);
-    
 
-    for(var eachPlayer in jsonData['data']){
-        final player = Player(
-        name: eachPlayer['first_name']+ ' ' +eachPlayer['last_name'],
+    for (var eachPlayer in jsonData['data']) {
+      final player = Player(
+        name: eachPlayer['first_name'] + ' ' + eachPlayer['last_name'],
         position: eachPlayer['position'],
         id: eachPlayer['team']['id'],
         conference: eachPlayer['team']['conference'],
-        );
-        players.add(player);
-      
-      }
-        for(var player in players){
-        if(player.id == widget.teamId){
+      );
+      players.add(player);
+    }
+    for (var player in players) {
+      if (player.id == widget.teamId) {
         filteredPlayers.add(player);
-        }
       }
+    }
     print(filteredPlayers.length);
-  
+  }
 
-
-  
- }
-
- 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: SafeArea(
+    return Scaffold(
+      body: SafeArea(
         child: FutureBuilder(
             future: getPlayers(),
             builder: (context, snapshot) {
@@ -69,8 +60,10 @@ class _PlayerPageState extends State<PlayerPage> {
                         child: ListTile(
                           leading: Icon(Icons.man),
                           title: Text(filteredPlayers[index].name),
-                          subtitle: Text(filteredPlayers[index].conference,),
-                          onTap: (){
+                          subtitle: Text(
+                            filteredPlayers[index].conference,
+                          ),
+                          onTap: () {
                             print('pressed');
                           },
                         ),
