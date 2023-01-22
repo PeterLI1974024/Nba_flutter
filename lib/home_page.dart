@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:httpapp/player_card.dart';
 import 'package:httpapp/player_page.dart';
 import 'models/team.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -28,6 +29,7 @@ class _HomePageState extends State<HomePage> {
 
       teams.add(team);
     }
+    print(teams.length);
   }
 
   Future? _data;
@@ -75,7 +77,8 @@ class _HomePageState extends State<HomePage> {
                             });
                             Navigator.push(context,
                                 MaterialPageRoute(builder: (context) {
-                              return PlayerPage(teamId: teams[index].id);
+                              return PlayerCard(
+                                  teamName: teams[index].abbreviation);
                             }));
                           },
                         ),
