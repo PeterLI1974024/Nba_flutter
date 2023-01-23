@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:httpapp/info_card.dart';
 import 'models/player.dart';
+import 'dart:convert';
 
 class PlayerCard extends StatefulWidget {
   @override
   State<PlayerCard> createState() => _PlayerCardState();
 
-  PlayerCard({this.teamName});
+  PlayerCard({
+    this.teamName,
+  });
   final teamName;
 }
 
@@ -80,7 +84,15 @@ class _PlayerCardState extends State<PlayerCard> {
                           ),
                           title: Text(players[index].name),
                           subtitle: Text(players[index].position),
-                          onTap: () {},
+                          onTap: () {
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (context) {
+                              return InfoCard(
+                                playerId: players[index].id,
+                                playerName: players[index].name,
+                              );
+                            }));
+                          },
                         ),
                       ),
                     );

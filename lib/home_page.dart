@@ -78,7 +78,8 @@ class _HomePageState extends State<HomePage> {
                             Navigator.push(context,
                                 MaterialPageRoute(builder: (context) {
                               return PlayerCard(
-                                  teamName: teams[index].abbreviation);
+                                teamName: teams[index].abbreviation,
+                              );
                             }));
                           },
                         ),
