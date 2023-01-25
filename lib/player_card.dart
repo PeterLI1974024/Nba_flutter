@@ -78,9 +78,12 @@ class _PlayerCardState extends State<PlayerCard> {
                           borderRadius: BorderRadius.circular(35),
                         ),
                         child: ListTile(
-                          leading: CircleAvatar(
-                            backgroundColor: Color.fromARGB(255, 85, 91, 79),
-                            backgroundImage: NetworkImage(url),
+                          leading: Hero(
+                            tag: 'picture',
+                            child: CircleAvatar(
+                              backgroundColor: Color.fromARGB(255, 85, 91, 79),
+                              backgroundImage: NetworkImage(url),
+                            ),
                           ),
                           title: Text(players[index].name),
                           subtitle: Text(players[index].position),
